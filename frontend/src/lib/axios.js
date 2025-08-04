@@ -1,8 +1,12 @@
 import axios from "axios";
 
-const BASE_URL = import.meta.env.MODE === "development" ? "http://localhost:5001/api": "/api"
+// Dynamically choose the base URL based on the environment
+// In development, it points to localhost
+// In production, it points to the URL defined in .env.production
+const BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5001";
+
 const api = axios.create({
-  baseURL: BASE_URL
+  baseURL: BASE_URL + "/api",
 });
 
 // Use an interceptor to add the token to every request
