@@ -6,21 +6,22 @@ import notesRoutes from "./routes/notesRoutes.js";
 import rateLimiter from "./middleware/rateLimiter.js";
 import authRoutes from './routes/auth.js';
 import path from "path";
-
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5001;
 const __dirname = path.resolve();
 
+app.use(cors());
+
 // Global Middleware
-if (process.env.NODE_ENV !== "production") {
-  app.use(
-    cors({
-      origin: "http://localhost:5173",
-    })
-  );
-}
+// if (process.env.NODE_ENV !== "production") {
+//   app.use(
+//     cors({
+//       origin: "http://localhost:5173",
+//     })
+//   );
+// }
 
 app.use(express.json());
 app.use(rateLimiter);
