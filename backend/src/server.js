@@ -5,12 +5,14 @@ import { connectDB } from "./config/db.js";
 import notesRoutes from "./routes/notesRoutes.js";
 import rateLimiter from "./middleware/rateLimiter.js";
 import authRoutes from './routes/auth.js';
+import path from "path";
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5001;
 
+const __dirname = path.resolve();
 // Global Middleware
 if (process.env.NODE_ENV !== "production") {
   app.use(
@@ -26,6 +28,14 @@ app.use(rateLimiter);
 // Define Routes
 app.use("/api/notes", notesRoutes);
 app.use('/api/auth', authRoutes);
+
+if(process.env.NODE_ENV === "production"){
+  app.use(express.static(path.join(__dirname,"../frontend/dist")));
+
+  app.get("*",(req,res) =>{
+    res.sendFile(path.join(__dirname,"../frontend","dist","index.html"));
+  })
+}
 
 app.get("/", (req, res) => res.send("API Running"));
 
